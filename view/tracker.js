@@ -30,7 +30,7 @@ class Tracker {
       event,
       tags,
       ts,
-      id: ts.toISOString(), //not the best id, but it works
+      id: Math.random().toString(),
       url: document.URL,
       title: document.title,
     };
@@ -72,6 +72,7 @@ class Tracker {
         }
       })
       .catch(console.log);
+    this.readyToSubmit = false;
   }
 
   /** if something has been added to the stack submit them */
@@ -89,7 +90,6 @@ class Tracker {
 
     if (this.readyToSubmit) {
       this.#submitTrackEventsStack();
-      this.readyToSubmit = false;
     }
   }
 }
@@ -101,6 +101,4 @@ let tracker = new Tracker({
   readyToSubmit: true,
 });
 
-window.addEventListener("beforeunload", () => tracker.track("unload"), {
-  once: true,
-});
+window.addEventListener("beforeunload", () => tracker.track("unload"));
